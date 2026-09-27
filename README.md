@@ -1,10 +1,16 @@
-# esp32-ST7735-animations
+# DM-01
 
 
 https://github.com/user-attachments/assets/bfb8bbe7-ee6e-4292-86b1-a62717d555e8
 
 
 Two boards, one project per animation: **ESP32-C3** with an ST7735 160×128 TFT (SPI), WS2812 NeoPixel (GPIO 10) and touch pad GPIO 0 / BOOT button GPIO 9; and the **CYD** (ESP32-2432S028R) with an ST7789 320×240 TFT and XPT2046 touch.
+
+No WiFi credentials or API tokens are committed here. The four `hn_*` sketches
+ship with empty `WIFI_SSID` / `WIFI_PASSWORD` defines — set your network before
+flashing. The CYD `github_squares` sketches have no default GitHub token: an
+empty token falls back to the public mirror API, and a token can still be
+entered in the on-device setup portal.
 
 ## Development Skills
 
@@ -46,9 +52,16 @@ C3, CYD, or both while a port is being prepared:
 ```bash
 cd webui
 npm install
-ARDUINO_CLI=$(which arduino-cli) npm run firmware   # build all 20 merged images into public/firmware/
+ARDUINO_CLI=$(which arduino-cli) npm run firmware   # build all 40 merged images (20 sketches × C3/CYD) into public/firmware/
 npm run dev        # open http://localhost:3000 in Chrome/Edge/Opera
+npm run deploy     # static export + wrangler deploy to Cloudflare Workers
 ```
 
 Each variant is a merged 4 MB binary (bootloader + partition table + OTA selector + app)
 written at `0x0`. C3 builds use `CDCOnBoot=cdc`; CYD builds flash over the CH340 at 460800 baud.
+
+The flasher deploys to Cloudflare Workers as an assets-only Worker: `npm run deploy`
+builds the static export (`output: "export"`) and uploads it with wrangler — see
+[`webui/README.md`](webui/README.md) for details. The published `hn_*` images are
+built from the credential-free sources, so they boot without a network until you
+rebuild them with your own WiFi defines.

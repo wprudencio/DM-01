@@ -13,8 +13,9 @@ WebSerial with [esptool-js](https://github.com/espressif/esptool-js):
 
 ```bash
 npm install
-ARDUINO_CLI=$(which arduino-cli) npm run firmware   # build all 20 merged images -> public/firmware/<project>/<c3|cyd>.bin
+ARDUINO_CLI=$(which arduino-cli) npm run firmware   # build all 40 merged images -> public/firmware/<project>/<c3|cyd>.bin
 npm run dev        # http://localhost:3000
+npm run deploy     # static export + wrangler deploy to Cloudflare Workers
 ```
 
 - `npm run firmware` shells out to `scripts/build-firmware.sh`; it defaults to
@@ -30,5 +31,22 @@ npm run dev        # http://localhost:3000
   checklist (`build-firmware.sh` targets, `lib/firmwares.ts` entry,
   screenshots) — release only, on request.
 
-For static hosting add `output: "export"` to `next.config.ts` and serve the
-generated `out/` directory.
+## Deploy to Cloudflare Workers
+
+The site builds as a static export (`output: "export"` in `next.config.ts`) and
+ships as an assets-only Worker — `wrangler.jsonc` points wrangler at `out/` and
+there is no Worker script, so asset requests are served straight from the edge.
+
+```bash
+npm run deploy     # next build && wrangler deploy
+npm run preview    # next build && wrangler dev (local Workers runtime)
+```
+
+- One-time setup: `npx wrangler login` (or export `CLOUDFLARE_API_TOKEN`).
+- First deploy creates the `dm-01` Worker and serves it at
+  `https://dm-01.<your-subdomain>.workers.dev`.
+- Routing is handled by `assets.html_handling: "auto-trailing-slash"` (so `/vhs`
+  serves `vhs.html`) and `assets.not_found_handling: "404-page"`.
+- The `hn_*` firmware images carry no WiFi credentials (the sketches ship with
+  empty defines) — set your SSID/password and run `npm run firmware` before
+  flashing if you need them to join a network.
