@@ -16,7 +16,7 @@ export type Firmware = {
   variants: Variant[];
 };
 
-export const REPO_URL = "https://github.com/wprudencio/esp32-ST7735-animations";
+export const REPO_URL = "https://github.com/wprudencio/DM-01";
 
 export const FIRMWARES: Firmware[] = [
   {
