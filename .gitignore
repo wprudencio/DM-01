@@ -1,0 +1,31 @@
+# macOS
+.DS_Store
+
+# Arduino / ESP32 build artifacts
+build/
+firmware-build/
+*.elf
+*.hex
+*.o
+*.bin
+
+# Generated firmware served by the web flasher
+!webui/public/firmware/**/*.bin
+
+# ESP-IDF (framework, not part of sketch)
+esp-idf/
+sdkconfig
+sdkconfig.old
+
+# Arduino CLI tools
+bin/
+
+# IDE / editor
+.vscode/
+.idea/
+*.swp
+*~
+
+# Python
+__pycache__/
+*.pyc
