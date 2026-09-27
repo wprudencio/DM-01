@@ -43,6 +43,9 @@ npm run preview    # next build && wrangler dev (local Workers runtime)
 ```
 
 - One-time setup: `npx wrangler login` (or export `CLOUDFLARE_API_TOKEN`).
+- Deploy credentials never live in the repo: `wrangler login` keeps its OAuth
+  token under `$HOME`, CI should pass `CLOUDFLARE_API_TOKEN` as a secret, and
+  local Worker secrets belong in `.dev.vars` (git-ignored).
 - First deploy creates the `dm-01` Worker and serves it at
   `https://dm-01.<your-subdomain>.workers.dev`.
 - Routing is handled by `assets.html_handling: "auto-trailing-slash"` (so `/vhs`
