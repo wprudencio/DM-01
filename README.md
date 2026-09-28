@@ -18,6 +18,7 @@ This repo includes [Agent Skills](https://agentskills.io)-compatible skills at [
 
 - [`esp32-c3-ws2812`](.agents/skills/esp32-c3-ws2812/) — C3 + CYD pinouts, Arduino CLI flashing, framebuffer and 64-row strip rendering, WiFi reliability, DM-01 intro, serial screenshots.
 - [`casio-f91w-lcd-ui`](.agents/skills/casio-f91w-lcd-ui/) — the Casio F-91W LCD look: light palette, ghost 7-segment digits, 4x5 font, red accent strip, sprites and component patterns.
+- [`signal-vhs-ui`](.agents/skills/signal-vhs-ui/) — the SIGNAL breaking-news theme: near-black deck, white ink, magenta + signal green, Departure Mono type and per-element VHS glitch rips.
 - [`firmware-release-pipeline`](.agents/skills/firmware-release-pipeline/) — publishing to the web flasher: screenshots, merged `.bin` builds, `webui` entries. Used only when a release is requested.
 
 The skills are auto-discovered by Agent Skills–compatible agents (opencode, Claude Code, Codex, …) working in this repo.

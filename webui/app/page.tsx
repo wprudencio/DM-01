@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { FIRMWARES } from "@/lib/firmwares";
+import { FIRMWARES, REPO_URL } from "@/lib/firmwares";
 
 const VHS_SQUARES = [
   { cls: "bg-neon", delay: "0s" },
@@ -8,9 +8,49 @@ const VHS_SQUARES = [
   { cls: "bg-cyan", delay: "3.9s" },
 ];
 
+const SKILLS = [
+  "esp32-c3-ws2812",
+  "casio-f91w-lcd-ui",
+  "signal-vhs-ui",
+  "firmware-release-pipeline",
+];
+
 export default function Home() {
   return (
     <main className="landing-site flex min-h-screen w-full flex-col">
+      <nav
+        aria-label="Agent skills"
+        className="flex flex-wrap items-center gap-x-3 gap-y-1.5 border-b border-line bg-[#0b0b0b] px-6 py-2.5 sm:px-10"
+      >
+        <a
+          href={`${REPO_URL}/tree/main/.agents/skills`}
+          target="_blank"
+          rel="noreferrer"
+          title="Agent Skills folder on GitHub"
+          className="font-pixel text-[10px] tracking-[0.26em] text-hot uppercase transition-colors hover:text-neon"
+        >
+          Agent skills
+        </a>
+        <ul className="flex flex-wrap items-center gap-1.5">
+          {SKILLS.map((id) => (
+            <li key={id}>
+              <a
+                href={`${REPO_URL}/tree/main/.agents/skills/${id}`}
+                target="_blank"
+                rel="noreferrer"
+                title={`${id} · Agent Skill`}
+                className="block border border-line px-2 py-0.5 text-[10.5px] tracking-[0.02em] text-mid transition-colors hover:border-neon hover:text-neon"
+              >
+                {id}
+              </a>
+            </li>
+          ))}
+        </ul>
+        <span className="hidden text-[10px] tracking-[0.14em] text-dim uppercase lg:ml-auto lg:inline">
+          auto-discovered by opencode · Claude Code · Codex
+        </span>
+      </nav>
+
       <div className="grid flex-1 grid-cols-1 lg:grid-cols-2">
       <Link
         href="/vhs"
