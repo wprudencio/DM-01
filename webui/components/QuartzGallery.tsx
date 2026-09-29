@@ -464,7 +464,7 @@ export default function QuartzGallery() {
         <div className="flex items-center gap-3">
           <Link
             href="/"
-            title="Home"
+            title="DM-01 — home"
             className="flex items-center gap-3 transition-opacity hover:opacity-80"
           >
             <span className="grid h-5 w-5 shrink-0 grid-cols-2 gap-[2px] border border-lcd-edge p-[2px]">
@@ -474,13 +474,13 @@ export default function QuartzGallery() {
               <span className="lcd-blink bg-lcd-accent" />
             </span>
             <span className="font-pixel text-[13px] tracking-[0.08em] text-lcd-ink uppercase">
-              Quartz
+              DM-01
             </span>
           </Link>
         </div>
 
         <span className="hidden font-pixel text-[10px] tracking-[0.32em] text-lcd-dim uppercase sm:block">
-          DM-01 · Firmware Deck
+          Firmware Deck
         </span>
 
         <div className="flex items-center justify-end gap-4">

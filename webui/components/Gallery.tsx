@@ -360,7 +360,7 @@ export default function Gallery() {
         <div className="flex items-center gap-3">
           <Link
             href="/"
-            title="Home"
+            title="DM-01 — home"
             className="flex items-center gap-3 transition-opacity hover:opacity-80"
           >
             <span className="grid h-5 w-5 shrink-0 grid-cols-2 gap-[2px] border border-line2 p-[2px]">
@@ -370,14 +370,14 @@ export default function Gallery() {
               <span className="animate-tape bg-cyan" style={{ animationDelay: "3.9s" }} />
             </span>
             <span className="aberrate font-pixel text-[13px] tracking-[0.08em] text-ink uppercase">
-              VHS
+              DM-01
             </span>
           </Link>
           <span aria-hidden className="animate-pip h-2 w-2 bg-hot" />
         </div>
 
         <span className="hidden font-pixel text-[10px] tracking-[0.32em] text-dim uppercase sm:block">
-          DM-01 · Firmware Deck
+          Firmware Deck
         </span>
 
         <div className="flex items-center justify-end gap-4">
