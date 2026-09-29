@@ -90,8 +90,8 @@ export default function Home() {
         </div>
 
         <div className="relative flex flex-col items-start gap-5">
-          <h1 className="wordmark font-pixel text-[56px] leading-none sm:text-[80px]">VHS</h1>
-          <p className="w-full max-w-sm text-[13px] leading-[1.7] text-mid">
+          <h1 className="wordmark font-pixel text-[56px] leading-none sm:text-[80px] lg:min-h-[109px]">VHS</h1>
+          <p className="w-full max-w-sm text-[13px] leading-[1.7] text-mid lg:min-h-[89px]">
             The original deck: every sketch on the dark SIGNAL theme — white ink, magenta
             and signal green, VHS scanlines and chromatic glitch bursts.
           </p>
@@ -117,7 +117,7 @@ export default function Home() {
             />
           </div>
 
-          <span className="mt-1 bg-gradient-to-r from-neon to-hot px-6 py-3 font-pixel text-[11px] tracking-[0.14em] text-void uppercase transition group-hover:brightness-110">
+          <span className="mt-1 border-2 border-transparent bg-gradient-to-r from-neon to-hot px-6 py-3 font-pixel text-[11px] tracking-[0.14em] text-void uppercase transition group-hover:brightness-110">
             Enter the deck →
           </span>
         </div>
@@ -153,7 +153,7 @@ export default function Home() {
             <div className="h-px w-56 bg-lcd-accentdk" />
             <div className="h-2 w-56 bg-lcd-accent" />
           </div>
-          <p className="w-full max-w-sm text-[13px] leading-[1.7] text-lcd-ink/80">
+          <p className="w-full max-w-sm text-[13px] leading-[1.7] text-lcd-ink/80 lg:min-h-[89px]">
             The watch-face deck: the same sketches redrawn on a flat light LCD — dark ink,
             ghost 7-seg digits and the red alarm sweep. No glitch over the readout.
           </p>
