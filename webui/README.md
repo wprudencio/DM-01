@@ -50,6 +50,9 @@ npm run preview    # next build && wrangler dev (local Workers runtime)
   `https://dm-01.<your-subdomain>.workers.dev`.
 - Routing is handled by `assets.html_handling: "auto-trailing-slash"` (so `/vhs`
   serves `vhs.html`) and `assets.not_found_handling: "404-page"`.
+- Worker Previews (`npx wrangler preview`, what Workers Builds runs for branch
+  builds) require the empty `previews` block in `wrangler.jsonc`; production
+  `wrangler deploy` ignores it.
 - The `hn_*` firmware images carry no WiFi credentials (the sketches ship with
   empty defines) — set your SSID/password and run `npm run firmware` before
   flashing if you need them to join a network.
