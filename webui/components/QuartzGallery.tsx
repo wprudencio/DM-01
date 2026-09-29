@@ -5,7 +5,7 @@ import { useCallback, useRef, useState, useSyncExternalStore } from "react";
 import type { Transport as TransportType } from "esptool-js";
 import { FIRMWARES, REPO_URL, type Firmware, type Variant } from "@/lib/firmwares";
 
-// QUARTZ editions, keyed "<firmware>:<variant>". A shot swaps the DM-01
+// QUARTZ editions, keyed "<firmware>:<variant>". A shot swaps the VHS
 // preview for the light-LCD screen; a bin powers Flash + the download link.
 type QuartzReady = { shot?: string; bin?: string };
 
@@ -480,7 +480,7 @@ export default function QuartzGallery() {
         </div>
 
         <span className="hidden font-pixel text-[10px] tracking-[0.32em] text-lcd-dim uppercase sm:block">
-          Firmware Deck
+          DM-01 · Firmware Deck
         </span>
 
         <div className="flex items-center justify-end gap-4">

@@ -80,4 +80,4 @@ Options: `-p/--port`, `-o/--out`, `-n/--count`, `-i/--interval`,
   inside `render()`), since the full 320x240 frame doesn't fit in one buffer.
 - The `esp32-c3-ws2812` skill documents the wider build/flash/screenshot
   workflow; publishing to the web flasher (screenshots included) is release
-  work — see the `firmware-release-pipeline` skill, used only on request.
+  work — do it only on request.

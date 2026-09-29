@@ -1,13 +1,14 @@
 ---
-name: casio-f91w-lcd-ui
-description: Reproduce the Casio F-91W LIGHT-LCD UI style for ESP32 TFT sketches (ST7735 160x128 and ST7789 320x240). Use when building or restyling watch-like timers, virtual pets and games with ghost 7-segment digits, a light greenish-grey LCD panel, dark ink, a red accent strip, LCD art sprites, and SET/progress indicators. Light palette in every state — no inverted/black negative mode. Covers pomodoro, 3d_cube, neko and flappy on C3 + CYD.
+name: quartz-lcd-ui
+description: Reproduce the Quartz light-LCD UI style for ESP32 TFT sketches (ST7735 160x128 and ST7789 320x240). Use when building or restyling watch-like timers, virtual pets and games with ghost 7-segment digits, a light greenish-grey LCD panel, dark ink, a red accent strip, LCD art sprites, and SET/progress indicators. Light palette in every state — no inverted/black negative mode. Covers pomodoro, 3d_cube, neko and flappy on C3 + CYD.
 ---
 
-# Casio F-91W LCD UI Style
+# Quartz LCD UI Style
 
-A faithful, framebuffer-based reproduction of the classic Casio F-91W digital
-watch face, described generically so it can be dropped into any ESP32 TFT
-sketch (ST7735 160x128, or ST7789 320x240 on the CYD).
+A faithful, framebuffer-based reproduction of the classic digital watch face,
+described generically so it can be dropped into any ESP32 TFT sketch (ST7735
+160x128, or ST7789 320x240 on the CYD). This is the light-LCD style behind the
+Quartz deck.
 
 The signature look: a flat **light greenish-grey LCD panel** with **dark
 7-segment digits** and faint **"ghost" unlit segments**, a **thin red accent
@@ -35,7 +36,7 @@ uint16_t panelInk()   { return rgb(28,34,24); }    // dark ink (digits, labels)
 uint16_t panelGhost() { return rgb(138,148,120); } // unlit segments (darker than bg)
 uint16_t panelHI()    { return rgb(178,186,160); } // light inner border
 uint16_t panelEdge()  { return rgb(96,104,82); }   // dark olive outer border
-uint16_t accent()     { return rgb(200,40,40); }   // F-91W red
+uint16_t accent()     { return rgb(200,40,40); }   // Quartz red
 uint16_t accentDK()   { return rgb(120,24,24); }   // dark red
 ```
 
@@ -291,7 +292,7 @@ opt-in:
    7seg counter ("BALLS: 080"), right label + counter ("FPS 060"). Carries
    identity + key numbers.
 2. **Red accent strip** (signature, cheap) — a dark line + a thicker red bar.
-   F-91W "ALARM" sweep. Variants in use: `pomodoro` y=13 dark + y=14 h4;
+   The Quartz alarm sweep. Variants in use: `pomodoro` y=13 dark + y=14 h4;
    `3d_cube` y=14 + y=15 h3; `neko` y=11 + y=12 h4; `pomodoro_cyd` 2px dark at
    `BAR_Y=26` + 8px red; `neko_cyd` y=24 dark + y=25 h8. Size it to the board —
    keep the recipe (1px dark + Npx red, no gap) and the red hue.
@@ -537,4 +538,4 @@ The watch look depends as much on spacing as on color. Tokens below are for
 | `neko_cyd/neko_cyd.ino` | CYD | Neko ×2 with 4x5 labels at scale 2 and sprite scale 4. |
 | `flappy/flappy.ino` | C3 | Canonical 4x5 API (`fbDrawChar57`/`fbText57`), game HUD, ready/game-over overlays. |
 | `flappy_cyd/flappy_cyd.ino` | CYD | Flappy ×2, strip framebuffer, 3x5 labels. |
-| `3d_cube_cyd/3d_cube_cyd.ino` | CYD | **Not an F-91W sketch** — deliberate dark cyan HUD. Do not convert. |
+| `3d_cube_cyd/3d_cube_cyd.ino` | CYD | **Not a Quartz sketch** — deliberate dark cyan HUD. Do not convert. |

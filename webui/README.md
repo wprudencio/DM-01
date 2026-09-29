@@ -1,6 +1,6 @@
 # webui
 
-Next.js gallery (DM-01 dark synthwave theme, Silkscreen + Geist Mono) that previews the
+Next.js gallery (VHS dark synthwave theme, Silkscreen + Geist Mono) that previews the
 `pomodoro`, `3d_cube`, `neko`, `flappy`, `btc_ticker`, `pong_clock`, `github_squares`,
 `asteroids`, `dvd` and `hn_display` sketches and flashes them over
 WebSerial with [esptool-js](https://github.com/espressif/esptool-js):
@@ -27,9 +27,8 @@ npm run deploy     # static export + wrangler deploy to Cloudflare Workers
 - Flashing requires Chrome/Edge/Opera on `localhost` or HTTPS.
 - Close any serial monitor or `tools/screenshot` watcher before flashing —
   a second process holding the port corrupts the esptool session.
-- Adding a sketch? See the `firmware-release-pipeline` skill for the full
-  checklist (`build-firmware.sh` targets, `lib/firmwares.ts` entry,
-  screenshots) — release only, on request.
+- Adding a sketch? Add its targets to `scripts/build-firmware.sh`, an entry
+  in `lib/firmwares.ts` and a screenshot — release work, only on request.
 
 ## Deploy to Cloudflare Workers
 

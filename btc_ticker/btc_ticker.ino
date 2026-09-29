@@ -747,7 +747,7 @@ void handleTouch() {
   }
 }
 
-// ── Rendering: Casio F-91W light LCD ──
+// ── Rendering: VHS deck ──
 void drawHeader() {
   // right block: [status] [trend arrow] [change%]
   char chg[12];

@@ -22,7 +22,7 @@ export const FIRMWARES: Firmware[] = [
   {
     id: "pomodoro",
     name: "POMODORO",
-    tagline: "F-91W TIMER",
+    tagline: "FOCUS TIMER",
     description:
       "25/5 focus timer with ghost 7-seg countdown, red progress sweep and a 4-step SET tracker. Tap to start or pause, hold to switch preset.",
     variants: [
@@ -78,7 +78,7 @@ export const FIRMWARES: Firmware[] = [
     name: "FLAPPY",
     tagline: "PIPE DODGER",
     description:
-      "F-91W flavoured Flappy Bird: tap to flap, dodge scrolling pipes and rack up a ghost 7-seg score. High score saved to NVS.",
+      "Flappy Bird: tap to flap, dodge scrolling pipes and rack up a ghost 7-seg score. High score saved to NVS.",
     variants: [
       {
         id: "c3",

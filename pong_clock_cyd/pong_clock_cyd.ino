@@ -816,7 +816,7 @@ bool introMode = false;
 #define DM01_SCALE 2
 #include "Dm01Intro.h"
 
-// ── Rendering: Casio F-91W light LCD, scaled 2x ──
+// ── Rendering: VHS deck, scaled 2x ──
 static inline bool blinkOn() { return (millis() / 450) % 2 == 0; }
 
 const char* statusText(uint16_t& color) {

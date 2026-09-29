@@ -10,18 +10,25 @@ const VHS_SQUARES = [
 
 const SKILLS = [
   "esp32-c3-ws2812",
-  "casio-f91w-lcd-ui",
+  "quartz-lcd-ui",
   "signal-vhs-ui",
-  "firmware-release-pipeline",
 ];
 
 export default function Home() {
   return (
     <main className="landing-site flex min-h-screen w-full flex-col">
       <nav
-        aria-label="Agent skills"
+        aria-label="Primary"
         className="flex flex-wrap items-center gap-x-3 gap-y-1.5 border-b border-line bg-[#0b0b0b] px-6 py-2.5 sm:px-10"
       >
+        <Link
+          href="/"
+          title="DM-01 — home"
+          className="font-pixel text-[13px] tracking-[0.08em] text-ink uppercase transition-opacity hover:opacity-80"
+        >
+          DM-01
+        </Link>
+        <span aria-hidden className="h-3 w-px bg-line2" />
         <a
           href={`${REPO_URL}/tree/main/.agents/skills`}
           target="_blank"
@@ -77,13 +84,13 @@ export default function Home() {
             ))}
           </span>
           <span className="aberrate font-pixel text-[10px] tracking-[0.3em] text-hot uppercase">
-            Signal · VHS edition
+            Signal edition
           </span>
           <span aria-hidden className="animate-pip h-2 w-2 bg-hot" />
         </div>
 
         <div className="relative flex flex-col items-start gap-5">
-          <h1 className="wordmark font-pixel text-[56px] leading-none sm:text-[80px]">DM-01</h1>
+          <h1 className="wordmark font-pixel text-[56px] leading-none sm:text-[80px]">VHS</h1>
           <p className="w-full max-w-sm text-[13px] leading-[1.7] text-mid">
             The original deck: every sketch on the dark SIGNAL theme — white ink, magenta
             and signal green, VHS scanlines and chromatic glitch bursts.
@@ -101,7 +108,7 @@ export default function Home() {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/screenshots/hn_cyd.png"
-              alt="Hacker News on the CYD in the DM-01 VHS theme"
+              alt="Hacker News on the CYD in the VHS theme"
               width={640}
               height={480}
               fetchPriority="high"

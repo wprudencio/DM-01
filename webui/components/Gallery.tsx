@@ -370,14 +370,14 @@ export default function Gallery() {
               <span className="animate-tape bg-cyan" style={{ animationDelay: "3.9s" }} />
             </span>
             <span className="aberrate font-pixel text-[13px] tracking-[0.08em] text-ink uppercase">
-              DM-01
+              VHS
             </span>
           </Link>
           <span aria-hidden className="animate-pip h-2 w-2 bg-hot" />
         </div>
 
         <span className="hidden font-pixel text-[10px] tracking-[0.32em] text-dim uppercase sm:block">
-          Firmware Deck
+          DM-01 · Firmware Deck
         </span>
 
         <div className="flex items-center justify-end gap-4">
@@ -391,7 +391,7 @@ export default function Gallery() {
             href="/quartz"
             className="font-pixel text-[10px] tracking-[0.18em] text-dim uppercase transition-colors hover:text-neon"
           >
-            Quartz
+            Quartz ↗
           </Link>
           <a
             href={REPO_URL}
@@ -415,14 +415,14 @@ export default function Gallery() {
           </div>
 
           <p className="aberrate font-pixel text-[10px] tracking-[0.4em] text-hot uppercase">
-            Retro firmware deck
+            Signal firmware deck
           </p>
           <h1 className="wordmark font-pixel text-[64px] leading-none sm:text-[92px]">
-            DM-01
+            VHS
           </h1>
           <p className="max-w-md text-[13px] leading-[1.7] tracking-[0.02em] text-mid">
-            Flash the DM-01 firmware deck for ESP32-C3 and CYD straight over
-            WebSerial — no toolchain, no drivers.
+            Flash the VHS deck for ESP32-C3 and CYD straight over WebSerial —
+            no toolchain, no drivers.
           </p>
           <div className="mt-1 flex items-center gap-6">
             <a
@@ -477,7 +477,7 @@ export default function Gallery() {
 
       <footer className="flex h-12 shrink-0 items-center justify-center border-t border-line bg-void/80 px-5">
         <p className="text-[10px] tracking-[0.16em] text-dim uppercase">
-          DM-01 · Close serial monitors before flashing ·{" "}
+          VHS · Close serial monitors before flashing ·{" "}
           <span className="text-neon">Hold BOOT if stuck</span>
         </p>
       </footer>
