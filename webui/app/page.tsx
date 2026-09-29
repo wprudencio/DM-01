@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { FIRMWARES } from "@/lib/firmwares";
+import { FIRMWARES, REPO_URL } from "@/lib/firmwares";
 
 const VHS_SQUARES = [
   { cls: "bg-neon", delay: "0s" },
@@ -8,13 +8,58 @@ const VHS_SQUARES = [
   { cls: "bg-cyan", delay: "3.9s" },
 ];
 
+const SKILLS = [
+  { id: "esp32-c3-ws2812", tint: "bg-hot" },
+  { id: "quartz-lcd-ui", tint: "bg-red" },
+  { id: "signal-vhs-ui", tint: "bg-neon" },
+];
+
 export default function Home() {
   return (
     <main className="landing-site flex min-h-screen w-full flex-col">
+      <nav
+        aria-label="Primary"
+        className="flex flex-wrap items-center gap-x-3 gap-y-1.5 border-b border-line bg-[#0b0b0b] px-6 py-2.5 sm:px-10"
+      >
+        <Link
+          href="/"
+          title="DM-01 — home"
+          className="font-pixel text-[13px] tracking-[0.08em] text-ink uppercase transition-opacity hover:opacity-80"
+        >
+          DM-01
+        </Link>
+        <div className="ml-auto flex flex-wrap items-center gap-x-3 gap-y-1.5">
+          <a
+            href={`${REPO_URL}/tree/main/.agents/skills`}
+            target="_blank"
+            rel="noreferrer"
+            title="Agent Skills folder on GitHub"
+            className="font-pixel text-[10px] tracking-[0.26em] text-hot uppercase transition-colors hover:text-neon"
+          >
+            Agent skills
+          </a>
+          <ul className="flex flex-wrap items-center gap-1.5">
+            {SKILLS.map((skill) => (
+              <li key={skill.id}>
+                <a
+                  href={`${REPO_URL}/tree/main/.agents/skills/${skill.id}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  title={`${skill.id} · Agent Skill`}
+                  className={`block px-2 py-0.5 text-[10.5px] font-semibold tracking-[0.02em] text-void transition hover:brightness-110 ${skill.tint}`}
+                >
+                  {skill.id}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </nav>
+
       <div className="grid flex-1 grid-cols-1 lg:grid-cols-2">
       <Link
         href="/vhs"
-        className="group relative flex flex-col justify-between gap-10 overflow-hidden border-b border-line bg-[#0b0b0b] p-6 sm:p-10 lg:border-r lg:border-b-0"
+        className="group relative flex flex-col gap-10 overflow-hidden border-b border-line bg-[#0b0b0b] p-6 sm:p-10 lg:border-r lg:border-b-0"
       >
         <div aria-hidden className="vhs-scan pointer-events-none absolute inset-0" />
         <div
@@ -37,14 +82,14 @@ export default function Home() {
             ))}
           </span>
           <span className="aberrate font-pixel text-[10px] tracking-[0.3em] text-hot uppercase">
-            Signal · VHS edition
+            Signal edition
           </span>
           <span aria-hidden className="animate-pip h-2 w-2 bg-hot" />
         </div>
 
         <div className="relative flex flex-col items-start gap-5">
-          <h1 className="wordmark font-pixel text-[56px] leading-none sm:text-[80px]">DM-01</h1>
-          <p className="w-full max-w-sm text-[13px] leading-[1.7] text-mid">
+          <h1 className="wordmark font-pixel text-[56px] leading-none sm:text-[80px] lg:min-h-[109px]">VHS</h1>
+          <p className="w-full max-w-sm text-[13px] leading-[1.7] text-mid lg:min-h-[89px]">
             The original deck: every sketch on the dark SIGNAL theme — white ink, magenta
             and signal green, VHS scanlines and chromatic glitch bursts.
           </p>
@@ -61,7 +106,7 @@ export default function Home() {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/screenshots/hn_cyd.png"
-              alt="Hacker News on the CYD in the DM-01 VHS theme"
+              alt="Hacker News on the CYD in the VHS theme"
               width={640}
               height={480}
               fetchPriority="high"
@@ -70,12 +115,12 @@ export default function Home() {
             />
           </div>
 
-          <span className="mt-1 bg-gradient-to-r from-neon to-hot px-6 py-3 font-pixel text-[11px] tracking-[0.14em] text-void uppercase transition group-hover:brightness-110">
+          <span className="mt-1 border-2 border-transparent bg-gradient-to-r from-neon to-hot px-6 py-3 font-pixel text-[11px] tracking-[0.14em] text-void uppercase transition group-hover:brightness-110">
             Enter the deck →
           </span>
         </div>
 
-        <div className="relative flex flex-wrap items-center gap-x-6 gap-y-1 text-[10px] tracking-[0.16em] text-dim uppercase">
+        <div className="relative mt-auto flex flex-wrap items-center gap-x-6 gap-y-1 text-[10px] tracking-[0.16em] text-dim uppercase">
           <span>{FIRMWARES.length} firmwares</span>
           <span>ESP32-C3 + CYD</span>
           <span className="text-neon">Dark deck</span>
@@ -84,7 +129,7 @@ export default function Home() {
 
       <Link
         href="/quartz"
-        className="group lcd-dots relative flex flex-col justify-between gap-10 overflow-hidden bg-lcd p-6 text-lcd-ink sm:p-10"
+        className="group lcd-dots relative flex flex-col gap-10 overflow-hidden bg-lcd p-6 text-lcd-ink sm:p-10"
       >
         <div className="relative flex items-center gap-3">
           <span className="grid h-5 w-5 shrink-0 grid-cols-2 gap-[2px] border border-lcd-edge p-[2px]">
@@ -106,7 +151,7 @@ export default function Home() {
             <div className="h-px w-56 bg-lcd-accentdk" />
             <div className="h-2 w-56 bg-lcd-accent" />
           </div>
-          <p className="w-full max-w-sm text-[13px] leading-[1.7] text-lcd-ink/80">
+          <p className="w-full max-w-sm text-[13px] leading-[1.7] text-lcd-ink/80 lg:min-h-[89px]">
             The watch-face deck: the same sketches redrawn on a flat light LCD — dark ink,
             ghost 7-seg digits and the red alarm sweep. No glitch over the readout.
           </p>
@@ -137,7 +182,7 @@ export default function Home() {
           </span>
         </div>
 
-        <div className="relative flex flex-wrap items-center gap-x-6 gap-y-1 font-pixel text-[10px] tracking-[0.14em] text-lcd-dim uppercase">
+        <div className="relative mt-auto flex flex-wrap items-center gap-x-6 gap-y-1 font-pixel text-[10px] tracking-[0.14em] text-lcd-dim uppercase">
           <span>{FIRMWARES.length} firmwares</span>
           <span>ESP32-C3 + CYD</span>
           <span className="text-lcd-accent">Light LCD</span>

@@ -5,7 +5,7 @@ import { useCallback, useRef, useState, useSyncExternalStore } from "react";
 import type { Transport as TransportType } from "esptool-js";
 import { FIRMWARES, REPO_URL, type Firmware, type Variant } from "@/lib/firmwares";
 
-// QUARTZ editions, keyed "<firmware>:<variant>". A shot swaps the DM-01
+// QUARTZ editions, keyed "<firmware>:<variant>". A shot swaps the VHS
 // preview for the light-LCD screen; a bin powers Flash + the download link.
 type QuartzReady = { shot?: string; bin?: string };
 
@@ -464,7 +464,7 @@ export default function QuartzGallery() {
         <div className="flex items-center gap-3">
           <Link
             href="/"
-            title="Home"
+            title="DM-01 — home"
             className="flex items-center gap-3 transition-opacity hover:opacity-80"
           >
             <span className="grid h-5 w-5 shrink-0 grid-cols-2 gap-[2px] border border-lcd-edge p-[2px]">
@@ -474,7 +474,7 @@ export default function QuartzGallery() {
               <span className="lcd-blink bg-lcd-accent" />
             </span>
             <span className="font-pixel text-[13px] tracking-[0.08em] text-lcd-ink uppercase">
-              Quartz
+              DM-01
             </span>
           </Link>
         </div>

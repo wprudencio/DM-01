@@ -2,6 +2,10 @@
   "$schema": "./node_modules/wrangler/config-schema.json",
   "name": "dm-01",
   "compatibility_date": "2026-09-27",
+  // Worker Previews (the `wrangler preview` deploy command used by Workers
+  // Builds for non-production branches) refuses to run without this block.
+  // It can stay empty: assets, compatibility and placement live top-level.
+  "previews": {},
   "assets": {
     "directory": "./out",
     "html_handling": "auto-trailing-slash",

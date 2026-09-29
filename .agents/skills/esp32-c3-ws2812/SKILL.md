@@ -1,6 +1,6 @@
 ---
 name: esp32-c3-ws2812
-description: Develop and flash ESP32 sketches in this repo — ESP32-C3 + ST7735 160x128 (WS2812 on GPIO 10, touch pad/BOOT button) and CYD ESP32-2432S028R + ST7789 320x240 (XPT2046 touch, CH340). Covers framebuffer/strip rendering, the shared DM-01 boot intro, WiFi reliability (TX power, retry/reset rules), serial screenshots, and Arduino CLI builds. Use when working on pomodoro, 3d_cube, neko, flappy, btc_ticker, their *_cyd ports, or flashing boards. Not for releases — that is the firmware-release-pipeline skill, used only on request.
+description: Develop and flash ESP32 sketches in this repo — ESP32-C3 + ST7735 160x128 (WS2812 on GPIO 10, touch pad/BOOT button) and CYD ESP32-2432S028R + ST7789 320x240 (XPT2046 touch, CH340). Covers framebuffer/strip rendering, the shared DM-01 boot intro, WiFi reliability (TX power, retry/reset rules), serial screenshots, and Arduino CLI builds. Use when working on pomodoro, 3d_cube, neko, flappy, btc_ticker, their *_cyd ports, or flashing boards. Releases are out of scope.
 ---
 
 # ESP32 Sketches — C3 / ST7735 + CYD / ST7789
@@ -14,9 +14,9 @@ Every project in this repo ships as two variants:
 
 Projects: `pomodoro`, `3d_cube`, `neko`, `flappy`, `btc_ticker` (C3) and
 `pomodoro_cyd`, `3d_cube_cyd`, `neko_cyd`, `flappy_cyd`, `btc_ticker_cyd`
-(CYD). The visual style is documented separately in the `casio-f91w-lcd-ui`
+(CYD). The visual style is documented separately in the `quartz-lcd-ui`
 skill (note: `3d_cube_cyd` is a deliberate dark cyan scene and `btc_ticker` /
-`btc_ticker_cyd` follow the DM-01 dark terminal palette, not F-91W).
+`btc_ticker_cyd` follow the VHS dark terminal palette, not the Quartz light LCD).
 
 ## Hardware
 
@@ -598,14 +598,7 @@ past boot, then ping `'S'` manually; with `-n/--count`, a mid-run USB drop
 reconnects and resets the board, which can make two "animation" frames
 identical.
 
-## 9. Firmware Release Pipeline (separate skill)
-
-Releasing to the web flasher is **not** part of sketch development. When the
-user explicitly asks to release, publish, or update the web flasher, load the
-`firmware-release-pipeline` skill — it owns the screenshot capture, merged
-`.bin` builds and `webui/` updates. Do not do any of that on your own.
-
-## 10. WiFi Reliability (C3 + CYD)
+## 9. WiFi Reliability (C3 + CYD)
 
 WiFi sketches in this repo: `btc_ticker`, `hn_display`, `hn_cyd`.
 
@@ -728,7 +721,7 @@ Rules learned the hard way:
 - WiFi creds + a `tz` index share the NVS namespace `dm01`; the portal select
   is just `preferences.getInt("tz", 0)`.
 
-## 11. DM-01 Boot Intro (shared header)
+## 10. DM-01 Boot Intro (shared header)
 
 Every project can play the DM-01 boot animation: a retro sunset gradient with
 a rising slatted sun, the logo flying out of the sun as pixel blocks, a rainbow
@@ -782,7 +775,7 @@ The header requires `WIDTH`, `HEIGHT`, `rgb()`, and the usual primitives
 The CYD integration is new — verify it on hardware the first time you flash a
 CYD build.
 
-## 12. Common Pitfalls
+## 11. Common Pitfalls
 
 | Problem | Cause | Fix |
 |---|---|---|
@@ -791,25 +784,25 @@ CYD build.
 | **CYD colors inverted** | ST7789 init sends INVON | `tft.invertDisplay(false)` after `tft.init(240,320)` |
 | **CYD touch never fires** | IRQ pin 36 needs an external pull-up; wrong axis map | `pinMode(36, INPUT)`, swap axes: `tx=map(yRaw,200,3900,0,320)` |
 | **CYD draw corrupts / crashes** | Full 150KB framebuffer attempted | Use the 64-row strip framebuffer (§5) |
-| **C3 WiFi flaky / `AUTH_EXPIRE`** | Default 19.5dBm TX saturates marginal antenna | `WiFi.setTxPower(WIFI_POWER_8_5dBm)` (§10) |
-| **`sta is connecting, cannot set config`** | `WiFi.begin()` called while connecting | Disconnect + back off; never begin on a timer (§10) |
+| **C3 WiFi flaky / `AUTH_EXPIRE`** | Default 19.5dBm TX saturates marginal antenna | `WiFi.setTxPower(WIFI_POWER_8_5dBm)` (§9) |
+| **`sta is connecting, cannot set config`** | `WiFi.begin()` called while connecting | Disconnect + back off; never begin on a timer (§9) |
 | **Tearing / flicker** | Full-screen clear every frame, or erase-then-draw | Framebuffer (one flush) or diff-only updates |
 | **Slow FPS** | Long `delay()`, too many SPI writes | ≤16ms delay; render to RAM |
 | **Display won't init** | Wrong `initR` parameter | Try `INITR_BLACKTAB`, `INITR_GREENTAB`, `INITR_144GREENTAB` |
 | **Ghosting** | Drawing outside visible area | Verify `setRotation()` |
 | **Port not found** | Reconnect changed the device name | `arduino-cli board list` (`/dev/ttyACM*`/`/dev/ttyUSB*`) |
-| **Freeze after minutes (multi-zone clock)** | `setenv`/`tzset` leak ~24 B per TZ *change*; heap dies, allocations fail | Cache UTC offsets, no TZ switching in the loop (§10) |
+| **Freeze after minutes (multi-zone clock)** | `setenv`/`tzset` leak ~24 B per TZ *change*; heap dies, allocations fail | Cache UTC offsets, no TZ switching in the loop (§9) |
 | **Spurious taps / stuck on portal screen** | Raw XPT2046 IRQ on GPIO36 reads line noise as a press | Debounce 3 samples + validate the coordinates (§5) |
 | **CYD FPS ~10** | 40 MHz flush + interpolated per-pixel filter | `setSPISpeed(80000000)`, nearest-tap filter (§7) |
 | **C3 flash fails** | Boot mode issue | Hold **BOOT** (GPIO 9) while connecting |
 | **NeoPixel too hot/bright** | Full brightness at 3.3V | `pixels.setBrightness(50)` |
 
-## 13. Performance Checklist
+## 12. Performance Checklist
 
 - [ ] `SPI.begin()` called with correct pins (no MISO on C3: `-1`)
 - [ ] `tft.setSPISpeed(40000000)` set (CYD: 80 MHz is fine and 2x the flush)
 - [ ] CYD only: `invertDisplay(false)` + backlight GPIO 21 HIGH
-- [ ] Multi-zone clocks: no `setenv`/`tzset` in the loop — cached offsets (§10)
+- [ ] Multi-zone clocks: no `setenv`/`tzset` in the loop — cached offsets (§9)
 - [ ] CYD touch: IRQ debounced + coordinate read validated (§5)
 - [ ] 3D/games use a framebuffer; C3 full-frame, CYD 64-row strips
 - [ ] Framebuffer at global scope (not stack); one flush per frame/band
@@ -818,10 +811,9 @@ CYD build.
 - [ ] Rotation matrices pre-computed; colors pre-computed
 - [ ] Physics in local space for container simulations
 - [ ] Screenshot hook wired and `Screenshot.h` copy matches the master
-- [ ] DM-01 intro wired (`dm01Start()` + `dm01Frame()`/`dm01Tick()`); `Dm01Intro.h` copy matches the master (§11)
-- [ ] Release only on request: `firmware-release-pipeline` skill (build-firmware.sh, firmwares.ts, screenshots)
+- [ ] DM-01 intro wired (`dm01Start()` + `dm01Frame()`/`dm01Tick()`); `Dm01Intro.h` copy matches the master (§10)
 - [ ] WiFi sketches: `setTxPower(WIFI_POWER_8_5dBm)` + `setSleep(false)`; retries
-      disconnect first and never `begin()` on a timer (§10)
+      disconnect first and never `begin()` on a timer (§9)
 
 ---
 
@@ -836,4 +828,4 @@ CYD build.
 - Keep `Screenshot.h` copies in sync with `tools/screenshot/Screenshot.h`; all
   sketches currently ship identical copies.
 - The visual style (palette, 7-seg digits, 4x5 font, CYD 3x5 caveat) lives in
-  the `casio-f91w-lcd-ui` skill.
+  the `quartz-lcd-ui` skill.

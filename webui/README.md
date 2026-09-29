@@ -1,6 +1,6 @@
 # webui
 
-Next.js gallery (DM-01 dark synthwave theme, Silkscreen + Geist Mono) that previews the
+Next.js gallery (VHS dark synthwave theme, Silkscreen + Geist Mono) that previews the
 `pomodoro`, `3d_cube`, `neko`, `flappy`, `btc_ticker`, `pong_clock`, `github_squares`,
 `asteroids`, `dvd` and `hn_display` sketches and flashes them over
 WebSerial with [esptool-js](https://github.com/espressif/esptool-js):
@@ -27,9 +27,8 @@ npm run deploy     # static export + wrangler deploy to Cloudflare Workers
 - Flashing requires Chrome/Edge/Opera on `localhost` or HTTPS.
 - Close any serial monitor or `tools/screenshot` watcher before flashing —
   a second process holding the port corrupts the esptool session.
-- Adding a sketch? See the `firmware-release-pipeline` skill for the full
-  checklist (`build-firmware.sh` targets, `lib/firmwares.ts` entry,
-  screenshots) — release only, on request.
+- Adding a sketch? Add its targets to `scripts/build-firmware.sh`, an entry
+  in `lib/firmwares.ts` and a screenshot — release work, only on request.
 
 ## Deploy to Cloudflare Workers
 
@@ -50,6 +49,9 @@ npm run preview    # next build && wrangler dev (local Workers runtime)
   `https://dm-01.<your-subdomain>.workers.dev`.
 - Routing is handled by `assets.html_handling: "auto-trailing-slash"` (so `/vhs`
   serves `vhs.html`) and `assets.not_found_handling: "404-page"`.
+- Worker Previews (`npx wrangler preview`, what Workers Builds runs for branch
+  builds) require the empty `previews` block in `wrangler.jsonc`; production
+  `wrangler deploy` ignores it.
 - The `hn_*` firmware images carry no WiFi credentials (the sketches ship with
   empty defines) — set your SSID/password and run `npm run firmware` before
   flashing if you need them to join a network.

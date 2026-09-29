@@ -2,12 +2,11 @@
 // Port of btc_ticker/btc_ticker.ino (ESP32-C3 + ST7735 160x128) to the Cheap
 // Yellow Display: ST7789 320x240 + XPT2046 resistive touch.
 //
-// Live Binance ticker in the house Casio F-91W light LCD style (see the
-// casio-f91w-lcd-ui skill): light greenish-grey panel, red accent strip,
-// 4x5 labels at 2x, ghost 7-segment price, and an etched sparkline — a
-// halftone fill under an ink curve over a dot grid. Selector bar at the
-// bottom. Boots with the shared DM-01 intro; offline it falls back to
-// deterministic demo data.
+// Live Binance ticker in the house VHS style (see the signal-vhs-ui
+// skill): near-black deck, magenta accent strip, 4x5 labels at 2x, ghost
+// 7-segment price, and an etched sparkline — a halftone fill under an ink
+// curve over a dot grid. Selector bar at the bottom. Boots with the shared
+// DM-01 intro; offline it falls back to deterministic demo data.
 //
 // Controls: touch screen replaces the C3 pad — tap = next pair, hold >= 1s =
 // next timeframe. No NeoPixel on CYD, so state feedback is on-screen + serial.
@@ -739,7 +738,7 @@ void handleTouch() {
 #define DM01_SCALE 2
 #include "Dm01Intro.h"
 
-// ── Rendering: Casio F-91W light LCD, scaled 2x ──
+// ── Rendering: VHS deck, scaled 2x ──
 void drawHeader() {
   fbText(12, HDR_Y, PAIRS[currentPair].label, panelInk(), FS2);
   fbText((WIDTH - textW57(TF_LABELS[currentTimeFrame], FS2)) / 2, HDR_Y, TF_LABELS[currentTimeFrame], panelInk(), FS2);

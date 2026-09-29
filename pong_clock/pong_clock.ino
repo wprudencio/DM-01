@@ -799,7 +799,7 @@ void updateLed() {
   pixels.show();
 }
 
-// ── Rendering: Casio F-91W light LCD ──
+// ── Rendering: VHS deck ──
 static inline bool blinkOn() { return (millis() / 450) % 2 == 0; }
 
 const char* statusText(uint16_t& color) {

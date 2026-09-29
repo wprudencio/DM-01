@@ -360,7 +360,7 @@ export default function Gallery() {
         <div className="flex items-center gap-3">
           <Link
             href="/"
-            title="Home"
+            title="DM-01 — home"
             className="flex items-center gap-3 transition-opacity hover:opacity-80"
           >
             <span className="grid h-5 w-5 shrink-0 grid-cols-2 gap-[2px] border border-line2 p-[2px]">
@@ -391,7 +391,7 @@ export default function Gallery() {
             href="/quartz"
             className="font-pixel text-[10px] tracking-[0.18em] text-dim uppercase transition-colors hover:text-neon"
           >
-            Quartz
+            Quartz ↗
           </Link>
           <a
             href={REPO_URL}
@@ -415,14 +415,14 @@ export default function Gallery() {
           </div>
 
           <p className="aberrate font-pixel text-[10px] tracking-[0.4em] text-hot uppercase">
-            Retro firmware deck
+            Signal firmware deck
           </p>
           <h1 className="wordmark font-pixel text-[64px] leading-none sm:text-[92px]">
-            DM-01
+            VHS
           </h1>
           <p className="max-w-md text-[13px] leading-[1.7] tracking-[0.02em] text-mid">
-            Flash the DM-01 firmware deck for ESP32-C3 and CYD straight over
-            WebSerial — no toolchain, no drivers.
+            Flash the VHS deck for ESP32-C3 and CYD straight over WebSerial —
+            no toolchain, no drivers.
           </p>
           <div className="mt-1 flex items-center gap-6">
             <a
@@ -477,7 +477,7 @@ export default function Gallery() {
 
       <footer className="flex h-12 shrink-0 items-center justify-center border-t border-line bg-void/80 px-5">
         <p className="text-[10px] tracking-[0.16em] text-dim uppercase">
-          DM-01 · Close serial monitors before flashing ·{" "}
+          VHS · Close serial monitors before flashing ·{" "}
           <span className="text-neon">Hold BOOT if stuck</span>
         </p>
       </footer>

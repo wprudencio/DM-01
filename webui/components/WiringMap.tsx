@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState, type MouseEvent } from "react";
 
 type Group = "power" | "spi" | "ctrl" | "touch";
@@ -192,7 +193,9 @@ export default function WiringMap() {
             <i />
             <i />
           </span>
-          ESP32-C3 · Wiring map
+          <Link className="home" href="/" title="DM-01 — home">
+            DM-01
+          </Link>
           <span className="pip" aria-hidden="true" />
         </div>
         <span className="tag">ST7735 160×128 · TTP223</span>
