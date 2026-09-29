@@ -61,7 +61,7 @@ export default function Home() {
       <div className="grid flex-1 grid-cols-1 lg:grid-cols-2">
       <Link
         href="/vhs"
-        className="group relative flex flex-col justify-between gap-10 overflow-hidden border-b border-line bg-[#0b0b0b] p-6 sm:p-10 lg:border-r lg:border-b-0"
+        className="group relative flex flex-col gap-10 overflow-hidden border-b border-line bg-[#0b0b0b] p-6 sm:p-10 lg:border-r lg:border-b-0"
       >
         <div aria-hidden className="vhs-scan pointer-events-none absolute inset-0" />
         <div
@@ -122,7 +122,7 @@ export default function Home() {
           </span>
         </div>
 
-        <div className="relative flex flex-wrap items-center gap-x-6 gap-y-1 text-[10px] tracking-[0.16em] text-dim uppercase">
+        <div className="relative mt-auto flex flex-wrap items-center gap-x-6 gap-y-1 text-[10px] tracking-[0.16em] text-dim uppercase">
           <span>{FIRMWARES.length} firmwares</span>
           <span>ESP32-C3 + CYD</span>
           <span className="text-neon">Dark deck</span>
@@ -131,7 +131,7 @@ export default function Home() {
 
       <Link
         href="/quartz"
-        className="group lcd-dots relative flex flex-col justify-between gap-10 overflow-hidden bg-lcd p-6 text-lcd-ink sm:p-10"
+        className="group lcd-dots relative flex flex-col gap-10 overflow-hidden bg-lcd p-6 text-lcd-ink sm:p-10"
       >
         <div className="relative flex items-center gap-3">
           <span className="grid h-5 w-5 shrink-0 grid-cols-2 gap-[2px] border border-lcd-edge p-[2px]">
@@ -184,7 +184,7 @@ export default function Home() {
           </span>
         </div>
 
-        <div className="relative flex flex-wrap items-center gap-x-6 gap-y-1 font-pixel text-[10px] tracking-[0.14em] text-lcd-dim uppercase">
+        <div className="relative mt-auto flex flex-wrap items-center gap-x-6 gap-y-1 font-pixel text-[10px] tracking-[0.14em] text-lcd-dim uppercase">
           <span>{FIRMWARES.length} firmwares</span>
           <span>ESP32-C3 + CYD</span>
           <span className="text-lcd-accent">Light LCD</span>
