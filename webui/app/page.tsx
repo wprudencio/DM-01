@@ -9,9 +9,9 @@ const VHS_SQUARES = [
 ];
 
 const SKILLS = [
-  "esp32-c3-ws2812",
-  "quartz-lcd-ui",
-  "signal-vhs-ui",
+  { id: "esp32-c3-ws2812", tint: "bg-hot" },
+  { id: "quartz-lcd-ui", tint: "bg-red" },
+  { id: "signal-vhs-ui", tint: "bg-neon" },
 ];
 
 export default function Home() {
@@ -28,34 +28,32 @@ export default function Home() {
         >
           DM-01
         </Link>
-        <span aria-hidden className="h-3 w-px bg-line2" />
-        <a
-          href={`${REPO_URL}/tree/main/.agents/skills`}
-          target="_blank"
-          rel="noreferrer"
-          title="Agent Skills folder on GitHub"
-          className="font-pixel text-[10px] tracking-[0.26em] text-hot uppercase transition-colors hover:text-neon"
-        >
-          Agent skills
-        </a>
-        <ul className="flex flex-wrap items-center gap-1.5">
-          {SKILLS.map((id) => (
-            <li key={id}>
-              <a
-                href={`${REPO_URL}/tree/main/.agents/skills/${id}`}
-                target="_blank"
-                rel="noreferrer"
-                title={`${id} · Agent Skill`}
-                className="block border border-line px-2 py-0.5 text-[10.5px] tracking-[0.02em] text-mid transition-colors hover:border-neon hover:text-neon"
-              >
-                {id}
-              </a>
-            </li>
-          ))}
-        </ul>
-        <span className="hidden text-[10px] tracking-[0.14em] text-dim uppercase lg:ml-auto lg:inline">
-          auto-discovered by opencode · Claude Code · Codex
-        </span>
+        <div className="ml-auto flex flex-wrap items-center gap-x-3 gap-y-1.5">
+          <a
+            href={`${REPO_URL}/tree/main/.agents/skills`}
+            target="_blank"
+            rel="noreferrer"
+            title="Agent Skills folder on GitHub"
+            className="font-pixel text-[10px] tracking-[0.26em] text-hot uppercase transition-colors hover:text-neon"
+          >
+            Agent skills
+          </a>
+          <ul className="flex flex-wrap items-center gap-1.5">
+            {SKILLS.map((skill) => (
+              <li key={skill.id}>
+                <a
+                  href={`${REPO_URL}/tree/main/.agents/skills/${skill.id}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  title={`${skill.id} · Agent Skill`}
+                  className={`block px-2 py-0.5 text-[10.5px] font-semibold tracking-[0.02em] text-void transition hover:brightness-110 ${skill.tint}`}
+                >
+                  {skill.id}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
       </nav>
 
       <div className="grid flex-1 grid-cols-1 lg:grid-cols-2">
