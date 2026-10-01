@@ -9,8 +9,9 @@ A flat, high-contrast "breaking news" theme for the sketches, with a colourful
 VHS filter that glitches one UI element at a time.
 
 Reference implementations: `btc_ticker` / `btc_ticker_cyd` (ticker + portals),
-`pong_clock` / `pong_clock_cyd` (per-lane pong clock). Hardware, framebuffer,
-strip-rendering and touch details live in the `esp32-c3-ws2812` skill.
+`pong_clock` / `pong_clock_cyd` (per-lane pong clock), `nyc_events_cyd` (event
+list + the text-safe glitch tuning below). Hardware, framebuffer, strip-rendering
+and touch details live in the `esp32-c3-ws2812` skill.
 
 The look: **#101010 / #242424 deck**, **white ink**, a **magenta accent strip**
 and filled pips, **signal-green** progress + live pip + state text, **light-grey
@@ -155,38 +156,40 @@ each row reads shifted red/blue taps.
 
 ```cpp
 float ph = (float)t * 0.0018f;                       // slow chroma ripple
-float lsh = 1.4f + 1.3f * sinf(y*0.085f + ph);       // red pulled left
+float lsh = 1.4f + 1.3f * sinf(y*0.085f + ph);       // red pulled left  (graphics profile)
 float rsh = 1.8f + 2.1f * sinf(y*0.061f + 1.7f + ph*1.3f); // blue pulled right
 // sub-pixel interpolation of the taps, then:  r = (3*rSrc + base) >> 2
-int flick = 246 + (vhsNoise(t / 110u) % 11);         // 246..256 tape flicker
+int flick = 250 + (vhsNoise(t / 110u) % 7);         // 250..256 tape flicker
+// text bands scale the shifts down (or to zero) per band — see §5.1
 ```
 
 Per-element hits keep it from feeling like a strobe (and are what the user
 approved) — tuned up after the first pass ("more colours, a little more
-intense"):
+intense"), then calmed down after the text-safe pass (§5.1):
 
 ```cpp
 static bool elemHit(int i, uint32_t t, int &dx, uint8_t &pal){
   const uint32_t SLOT = 6000;                        // 6s slots, per element
   uint32_t phased = t + (uint32_t)(i * 1013u);       // stagger the elements
   uint32_t s = vhsNoise(phased / SLOT * 2654435761u ^ ((uint32_t)(i + 3) * 97u));
-  if((s % 5u) != 0) return false;                    // ~1 event / 5s overall
-  uint32_t start = (s >> 8) % (SLOT - 500u);
-  uint32_t dur   = 200u + ((s >> 20) % 240u);        // 200..440 ms burst
+  if((s % 8u) != 0) return false;                    // ~1 calm event / 8s slot
+  uint32_t start = (s >> 8) % (SLOT - 400u);
+  uint32_t dur   = 150u + ((s >> 20) % 180u);        // 150..330 ms burst
   uint32_t local = phased % SLOT;
   if(local < start || local >= start + dur) return false;
-  dx  = (int)((s >> 12) % 11u) - 5;                  // ±5px sideways tear
+  dx  = (int)((s >> 12) % 11u) - 5;                  // ±5px tear (clamped per band)
   pal = (uint8_t)(s >> 24);                          // starting rip colour
   return true;
 }
 ```
 
-A hit adds `+7` to both chroma shifts, `+4` brightness and the `dx` offset for
-that band, and **washes the band's rows with the primary palette**: the colour
-index steps every 60 ms and every 8 rows inside the hit
-(`vhsPal(pal + t/60 + (y>>3))`), mixed 75 % into ink pixels and 50 % into the
-deck (branch on the green channel: `g > 22` = ink). That keeps text legible
-while whole scanline stripes go saturated — the look the user asked for.
+A hit adds the band's chroma shift and brightness, applies its `dx` tear, and
+**washes the band's rows with the primary palette**: the colour index steps
+every 60 ms and every 8 rows inside the hit
+(`vhsPal(pal + t/60 + (y>>3))`), mixed into ink and deck with **per-band
+weights** (branch on the green channel: `g > 22` = ink). The first tuning
+washed ink at 75 % / deck 50 %; dense text screens need the text-safe variant
+below. Whole scanline stripes still go saturated — that's the look.
 Bands (y0..y1, exclusive) map to the components:
 
 | # | element | C3 pomodoro | CYD pomodoro | pong C3 | pong CYD |
@@ -198,6 +201,40 @@ Bands (y0..y1, exclusive) map to the components:
 | 4 | SET / lane 2 | 99..109 | 190..210 | court below 86..126 | 170..240 |
 | 5 | footer | 113..128 | 222..234 | — | — |
 
+### 5.1 Text-safe tuning (`nyc_events_cyd`, user-approved)
+
+Full-strength wash is for sparse screens. On a dense list the user first
+reported "hard to read — less glitch in the font"; the tuning below is what
+they then approved ("i loved how the text is on the VHS now, not too glitchy").
+Rule: **glyph bands stay crisp by default — the glitch lives on the strip and
+the rules, plus brief hit bursts on the rows.** Implemented as per-band
+parameters instead of one global strength:
+
+| band type | ambient ripple | tear | chroma on hit | ink wash | deck wash | boost |
+|---|---|---|---|---|---|---|
+| text (header, rows, status) | none | ±3px | +3.5 | 25 % (1/4) | 50 % | +2 |
+| graphics (accent strip) | full | ±5px | +7.0 | 75 % (3/4) | 50 % | +4 |
+
+```cpp
+// index 0 = header, 1 = strip, 2..6 = list rows (nyc_events_cyd layout)
+static const uint8_t bandTear[VHS_BANDS]    = { 4, 5, 3, 3, 3, 3, 3 };
+static const uint8_t bandWashInk[VHS_BANDS] = { 2, 2, 1, 1, 1, 1, 1 };  // quarters
+static const float bandLBase[VHS_BANDS] = { 0.7f, 1.4f, 0, 0, 0, 0, 0 };
+static const float bandLAmp [VHS_BANDS] = { 0.7f, 1.3f, 0, 0, 0, 0, 0 };
+static const float bandRBase[VHS_BANDS] = { 0.9f, 1.8f, 0, 0, 0, 0, 0 };
+static const float bandRAmp [VHS_BANDS] = { 1.0f, 2.1f, 0, 0, 0, 0, 0 };
+static const float bandChromaHit[VHS_BANDS] = { 5.0f, 7.0f, 3.5f, 3.5f, 3.5f, 3.5f, 3.5f };
+```
+
+- Crisp bands skip the per-pixel pass entirely unless hit
+  (`if (!hit && bandLAmp[bi]==0 && bandRAmp[bi]==0) continue;`) — better
+  legibility *and* less CPU than filtering every glyph row.
+- Header/status may keep a light ripple (`0.7 + 0.7·sin`); list rows take none.
+- Text hits are calmer too: `% 8u` slot chance, 150–330 ms bursts, flicker
+  `250 + noise % 7` (was `246 + % 11`).
+- Keep this profile for any list/detail screen; only go back to the full
+  treatment on short-label screens with few glyph rows.
+
 Hard-won rules:
 - **No full-width horizontal bars.** Rolling tracking bands and random tear
   bands were rejected as too busy/noisy. Only per-element hits. (The webui is
@@ -208,6 +245,9 @@ Hard-won rules:
   boot intro stays clean.
 - `elemHit` is evaluated **once per frame** (C3 full-frame) or **once per
   strip** from the shared `vhsT` (CYD), otherwise bands shear across strips.
+- **Text-first glitch strength.** On list/detail screens keep glyph bands crisp
+  (no ambient ripple, ±3px tear, 25 % ink wash) and spend the full tear/wash on
+  the strip and rules — see §5.1.
 - **Watch the cost on the CYD.** A per-pixel filter over 320x240 costs ~38 ms
   with sub-pixel chroma taps; nearest taps (`s[cx - li0]` instead of the
   interpolated pair) plus `setSPISpeed(80000000)` took pong_clock_cyd from
@@ -246,6 +286,8 @@ Hard-won rules:
 - [ ] Setup/portal screens draw at 11px 1x, never 2x/3x
 - [ ] Glitch: ripple + flicker + per-element hits with the primary palette,
       no full-width bands
+- [ ] Text-heavy screens: glyph bands crisp (no ambient ripple), hits ≤ ±3px
+      tear / 25 % ink wash (§5.1)
 - [ ] Bands cover every element
 - [ ] Filter skipped during the boot intro
 - [ ] CYD: `setSPISpeed(80000000)`, nearest-tap filter, touch debounced
