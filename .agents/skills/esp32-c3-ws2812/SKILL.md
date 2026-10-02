@@ -600,7 +600,8 @@ identical.
 
 ## 9. WiFi Reliability (C3 + CYD)
 
-WiFi sketches in this repo: `btc_ticker`, `hn_display`, `hn_cyd`.
+WiFi sketches in this repo: `btc_ticker`, `btc_ticker_cyd`, `hn_display`,
+`hn_cyd`, `nyc_events_cyd`.
 
 The C3 boards can be flaky at the default 19.5dBm TX power. Real case:
 `hn_display` failed association on every cold boot with repeated
@@ -660,6 +661,35 @@ Rules learned the hard way:
   antenna).
 - Do not hardcode WiFi credentials in new sketches — they leak into git
   history. Prefer a setup portal (`btc_ticker` has one) or NVS.
+
+### WiFi failure UX (mandatory for every WiFi sketch)
+
+An offline sketch that only retries forever is broken UX: the user cannot
+change networks without a computer. Every WiFi sketch ships all of this:
+
+- **Status screen names the failed SSID** (and the retry state) with an
+  actionable hint line: `TAP RETRY / HOLD 2S: WIFI SETUP`, plus
+  `BOOT 3S: WIFI SETUP` on a second line. Never a silent retry loop.
+- **Tap = retry now** — set `lastReconnectMs = 0` so the watchdog redials on
+  the next pass (online, tap keeps the sketch's own action, e.g. refresh).
+- **Hold 2s while offline/connecting opens the `DM-01-Setup` portal** so new
+  credentials can be entered; saving overwrites the failed network.
+- **Hold BOOT 3s opens the portal from any state** — including while
+  connected, to switch networks deliberately. Track the press origin
+  (`bootOrigin`) at press start so a 3s BOOT hold cannot also fire the
+  sketch's 1s touch hold.
+- **The portal is never a trap**: serve `GET /reboot` (a "reboot without
+  saving" link) and make on-device `HOLD BOOT 3S: EXIT` work — arm that exit
+  only after BOOT is released, or the hold that opened the portal reboots
+  straight back out of it.
+- **Show the network it was trying** on the portal page
+  (`Trying: <ssid>`, HTML-escaped) so the user knows what is being replaced.
+- **Serial escape hatches**: `W` = portal, `R` = reboot. Read with `peek()`
+  and only consume `W`/`R`, so a screenshot `S` stays queued for
+  `Screenshot.h`.
+
+Reference implementation: `nyc_events_cyd` (status screen, tap/hold/BOOT
+gestures, `/reboot` link, `W`/`R` console).
 
 ### NTP clocks (`pong_clock` pattern)
 
@@ -786,6 +816,7 @@ CYD build.
 | **CYD draw corrupts / crashes** | Full 150KB framebuffer attempted | Use the 64-row strip framebuffer (§5) |
 | **C3 WiFi flaky / `AUTH_EXPIRE`** | Default 19.5dBm TX saturates marginal antenna | `WiFi.setTxPower(WIFI_POWER_8_5dBm)` (§9) |
 | **`sta is connecting, cannot set config`** | `WiFi.begin()` called while connecting | Disconnect + back off; never begin on a timer (§9) |
+| **"How do I change WiFi?" unreachable** | Portal only opens with empty NVS; the offline loop retries forever | Status screen + tap retry; hold 2s offline (or BOOT 3s anywhere) opens the portal; portal has a reboot-without-saving exit (§9) |
 | **Tearing / flicker** | Full-screen clear every frame, or erase-then-draw | Framebuffer (one flush) or diff-only updates |
 | **Slow FPS** | Long `delay()`, too many SPI writes | ≤16ms delay; render to RAM |
 | **Display won't init** | Wrong `initR` parameter | Try `INITR_BLACKTAB`, `INITR_GREENTAB`, `INITR_144GREENTAB` |
@@ -814,6 +845,8 @@ CYD build.
 - [ ] DM-01 intro wired (`dm01Start()` + `dm01Frame()`/`dm01Tick()`); `Dm01Intro.h` copy matches the master (§10)
 - [ ] WiFi sketches: `setTxPower(WIFI_POWER_8_5dBm)` + `setSleep(false)`; retries
       disconnect first and never `begin()` on a timer (§9)
+- [ ] WiFi sketches: failure UX mandatory — failed SSID on screen, `TAP RETRY /
+      HOLD 2S` / `BOOT 3S` hints, portal with a reboot-without-saving exit (§9)
 
 ---
 
